@@ -1,55 +1,59 @@
 let config = require('../../config.json');
 const data = require('../../data.js');
+const disbut = require('discord-buttons');
 
-let myCallback = function(message, arguments, text) {
+//creates menu and sends it
+function createMenu(message, client){
+    
+    let options = [];
+    let index = 0;
+
+    //creating menu buttons for each time zone
+    for (let i = -12; i < 12; i++){
+        let UTCnum = (i >= 0) ? `UTC+${i}:00` : `UTC${i}:00`;
+        if (i == 0) { UTCnum = 'UTC±00:00'; }
+
+        options[index] = new disbut.MessageMenuOption()
+        options[index].setLabel(UTCnum)
+            .setValue(`UTC${i}`)
+            .setEmoji('🌎')
+            .setDefault()
+        index++;
+    }
+
+    let select = new disbut.MessageMenu()
+        .setID('timeZones')
+        .setPlaceholder('Time Zones'); //optional
+
+    //adding each option into selectmenu
+    for (element of options){
+        select.addOption(element);
+    }
+
+    //creating continue button
+    let button = new disbut.MessageButton()
+        .setStyle('blurple') //default: blurple
+        .setLabel('Continue') //default: NO_LABEL_PROVIDED
+        .setID('confirmTimeZone')
+    
+    message.channel.send('⠀', select);
+    message.channel.send('Please select your time zone, then press continue', button)
+    
+}
+
+let myCallback = function(message, arguments, text, client) {
+
     let [monthdayyear, hrsmin, ...input] = arguments;
         joinText = input.join(' ');
 
-    //parsing entered args for date
-    let [month, day, year] = monthdayyear.split("-").map(Number);
-    let [hour, minute] = hrsmin.split(":").map(Number);
-    month -= 1;
-    
-    //converting to actual dates
-    let now = Date.now();
-    let scheduledTime = new Date(year, month, day, hour, minute);
-
-    //check if date is valid
-    if ( isNaN(scheduledTime.getTime()) ){
-        message.reply(`Invalid time! \nExample command: \`${config.prefix}schedule 1-1-1975 0:00 scheduledMessage\``);
-        return;
-    }
-
-    let delay = scheduledTime.getTime() - now;
-
-    if (delay < 500){
-        message.reply("Invalid time: You cannot schedule a message in the past");
-        return;
-    }
-
-    message.reply(`Your message, *${joinText}*, has been scheduled for ${scheduledTime}`);
-
-    //scheduling message
-    let timerId = setTimeout(() => {
-
-        message.channel.send(`${joinText}`);
-        data.scheduledCounter -= 1;
-        data.scheduledMessages.splice(0, 1);
-
-        console.log(data);
-    }, delay);
-
-    //saving timerid
-    data.scheduledMessages[data.scheduledCounter] = timerId;
-    data.scheduledCounter += 1;
-    console.log(data);
+    createMenu(message, client);
 }
 
 module.exports = {
     commands: ['schedule', 'sched'],
-    expectedArgs: '<MM-DD-YYYY> <HOUR:MINUTE> <message>',
-    minArgs: 3,
-    maxArgs: null,
+    expectedArgs: '',
+    minArgs: 0,
+    maxArgs: 0,
     callback: myCallback,
     permissions: [],
     requiredRoles: [],

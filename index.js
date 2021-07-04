@@ -3,9 +3,11 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const disbut = require('discord-buttons');
+disbut(client);
 
 const data = require('./data.js');
 const { token } = require('./config.json');
+const menuSettings = require('./menuSettings.js');
 
 console.log(data);
 
@@ -31,6 +33,7 @@ client.on('ready', async () => {
     };
 
     readCommands('commands');
+    menuSettings(client);
 });
 
 client.login(token);

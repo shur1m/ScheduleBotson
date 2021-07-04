@@ -52,6 +52,7 @@ module.exports = (client, commandOptions) => {
     permissions = [],
     requiredRoles = [],
     callback,
+    internal = false,
   } = commandOptions
 
   // Ensure the command and aliases are in an array
@@ -109,7 +110,10 @@ module.exports = (client, commandOptions) => {
         const arguments = content.split(/[ ]+/)
 
         // Remove the command which is the first index
-        arguments.shift()
+        if (!internal){
+          arguments.shift()
+        }
+        
 
         // Ensure we have the correct number of arguments
         if (
