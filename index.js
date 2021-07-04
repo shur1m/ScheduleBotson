@@ -4,7 +4,10 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const disbut = require('discord-buttons');
 
+const data = require('./data.js');
 const { token } = require('./config.json');
+
+console.log(data);
 
 //initializing bot
 client.on('ready', async () => {

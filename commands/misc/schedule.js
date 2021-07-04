@@ -1,4 +1,5 @@
 let config = require('../../config.json');
+const data = require('../../data.js');
 
 let myCallback = function(message, arguments, text) {
     let [monthdayyear, hrsmin, ...input] = arguments;
@@ -29,9 +30,19 @@ let myCallback = function(message, arguments, text) {
     message.reply(`Your message, *${joinText}*, has been scheduled for ${scheduledTime}`);
 
     //scheduling message
-    setTimeout(() => {
-        message.channel.send(`${joinText}`);            
+    let timerId = setTimeout(() => {
+
+        message.channel.send(`${joinText}`);
+        data.scheduledCounter -= 1;
+        data.scheduledMessages.splice(0, 1);
+
+        console.log(data);
     }, delay);
+
+    //saving timerid
+    data.scheduledMessages[data.scheduledCounter] = timerId;
+    data.scheduledCounter += 1;
+    console.log(data);
 }
 
 module.exports = {
