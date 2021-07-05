@@ -1,7 +1,7 @@
 module.exports = {
 
     //values for schedule command
-    scheduledTimeZone: "UTC",
+    scheduledTimeZone: "UTC0",
     scheduledCounter: 0,
     scheduledMessages : [
 
