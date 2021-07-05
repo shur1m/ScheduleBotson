@@ -1,4 +1,4 @@
-# Botson: Anson, but a bot
+# Schedule Botson: Your Personal Discord Secretary
 **Implemented:**
 * Scheduling messages via Menu
 
