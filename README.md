@@ -1,4 +1,11 @@
 # Schedule Botson: Your Personal Discord Secretary
+
+## About
+
+Botson is the best secretary you've never had! It schedules messages/ announcements for you, and has memorized 7 different Japanese dictionaries!
+
+## Roadmap
+
 ### Implemented:
 * Scheduling messages via Menu
   * Allows you to schedule a message sent by the bot by date and time
@@ -17,3 +24,8 @@
 
 ### Unsure:
 * slash commands - currently difficult to implement. might wait for discord.js
+
+## Hosting the bot
+
+Requires NodeJS v12 or after <br>
+Using the terminal, navigate to bot folder and run `node index.js`
