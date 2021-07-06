@@ -4,6 +4,11 @@
 const data = require('../data');
 
 module.exports = (button) => {
+    receiveDate(button);
+
+}
+
+function receiveDate(button){
     button.channel.send('Please enter a date, time, and message in the format `<MM-DD-YYYY> <HOUR:MIN> <scheduledMessage>`');
 
     //ensures message author is equal to clicker of button
@@ -12,17 +17,20 @@ module.exports = (button) => {
     //await message from clicker
     button.channel.awaitMessages(filter, {
         max: 1,
-        time: 60 * 1000 * 5
+        time: 5 * 60 * 1000
     }).then(async (collected) => {
         console.log('collected:', collected.first().content);
         scheduleInput(collected.first());
         return;
     }).catch((err) => {
-        button.channel.send('You took to long to respond. Press the button again to schedule a message.');
-        console.error(err);
+        if (err.name === 'SyntaxError'){
+            button.channel.send('Error: You entered an invalid date');
+        } else if (err.name === 'TypeError'){
+            button.channel.send('You took too long to respond. Press the button again to schedule a message.');
+        }
+        console.log(err);
         return;
     })
-
 }
 
 function scheduleInput(message){
@@ -31,18 +39,21 @@ function scheduleInput(message){
     let inputText = message.content;
     const arguments = inputText.split(/[ ]+/);
 
-    if (arguments.length !== 3){
+    if (arguments.length < 3){
         message.reply("Incorrect Syntax! Please press continue to schedule a message again \n Example: `12-31-2076 12:36 scheduledMessage`");
         return;
     }
 
-    let monthdayyear = arguments[0];
-    let hrsmin = arguments[1];
-    let joinText = arguments[2];
+    let [monthdayyear, hrsmin, ...textArray] = arguments;
+    let joinText = textArray.join(' ');
 
     //parsing entered args for date
     let [month, day, year] = monthdayyear.split("-").map(Number);
     let [hour, minute] = hrsmin.split(":").map(Number);
+
+    if (!(month + day + year + hour + minute)){
+        throw { name: "SyntaxError", message: "Incorrect syntax" }
+    }
 
     //adding zeroes in front of single digit values
     month = addZero(month);
