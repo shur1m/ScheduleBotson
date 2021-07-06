@@ -2,7 +2,7 @@
 
 ## About
 
-Botson is the best secretary you've never had! It schedules messages/ announcements for you, and has memorized 7 different Japanese dictionaries!
+Botson is the best secretary (discord bot) you've never had! It schedules messages/ announcements for you, and has memorized 7 different Japanese dictionaries!
 
 ## Roadmap
 
