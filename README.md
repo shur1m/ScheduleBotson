@@ -2,10 +2,10 @@
 ### Implemented:
 * Scheduling messages via Menu
   * currently only supports up to 24 days into the future (issue WIP)
-  * use `!schedule` to schedule a message, and `!showschedule` to show scheduled messages
+  * use `!schedule` to schedule a message, and `!showschedule` to show scheduled messages in an embed
   * will implement deleting scheduled messages later
 
-![Uzoma Medium Gif](https://i.imgur.com/x8xVm6p.gif)
+![Uzoma Medium Gif](https://i.imgur.com/hhPeiX5.gif)
 
 ### Planned:
 * Deleting scheduled messages
