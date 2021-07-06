@@ -18,7 +18,7 @@ module.exports = (client) => {
     client.on('clickButton', async (button) => {
         switch (button.id) {
             case 'confirmTimeZone':
-                collectSchedule(button);
+                collectSchedule(button, client);
                 //fixes interaction failed
                 await button.reply.defer();
                 break;

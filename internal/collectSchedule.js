@@ -3,16 +3,45 @@
 
 const data = require('../data');
 
-module.exports = (button) => {
-    receiveDate(button);
+module.exports = (button, client) => {
+    let filter = m => m.author.id ===  button.clicker.id;
+    receiveChannel(client, button, filter);
 
 }
 
-function receiveDate(button){
-    button.channel.send('Please enter a date, time, and message in the format `<MM-DD-YYYY> <HOUR:MIN> <scheduledMessage>`');
+//prompts message channel from user
+function receiveChannel(client, button, filter){
+    button.channel.send('Please tag the channel you would like to schedule the message in.');
+    
+    //await message from clicker
+    button.channel.awaitMessages(filter, {
+        max: 1,
+        time: 30 * 1000
+    }).then(async (collected) => {
+        console.log('collected:', collected.first().content);
 
-    //ensures message author is equal to clicker of button
-    const filter = m => m.author.id ===  button.clicker.id;
+        //finding channel id from collected message
+        let text = collected.first().content
+        let sendChannel = client.channels.cache.get(text.substring(2, text.length-1));
+
+        //check is channel id is valid
+        if (sendChannel === undefined) { throw { name: "TypeError", message: "Invalid channel tag" } }
+
+        receiveDate(button, filter, sendChannel);
+        return;
+
+    }).catch((err) => {
+        if (err.name === 'TypeError'){
+            button.channel.send('ERROR: Invalid channel or no channel entered');
+        }
+        console.log(err);
+        return;
+    })
+}
+
+//prompts date and message from user
+function receiveDate(button, filter, sendChannel){
+    button.channel.send('Please enter a date, time, and message in the format `<MM-DD-YYYY> <HOUR:MIN> <scheduledMessage>`');
 
     //await message from clicker
     button.channel.awaitMessages(filter, {
@@ -20,7 +49,7 @@ function receiveDate(button){
         time: 5 * 60 * 1000
     }).then(async (collected) => {
         console.log('collected:', collected.first().content);
-        scheduleInput(collected.first());
+        scheduleInput(collected.first(), sendChannel);
         return;
     }).catch((err) => {
         if (err.name === 'SyntaxError'){
@@ -33,7 +62,7 @@ function receiveDate(button){
     })
 }
 
-function scheduleInput(message){
+function scheduleInput(message, sendChannel){
 
     //split message content into array
     let inputText = message.content;
@@ -86,7 +115,7 @@ function scheduleInput(message){
     //scheduling message
     let timerId = setTimeout(() => {
 
-        message.channel.send(`${joinText}`);
+        sendChannel.send(`${joinText}`);
         data.scheduledCounter -= 1;
         data.scheduledMessages.splice(0, 1);
         console.log(data);
@@ -102,6 +131,7 @@ function scheduleInput(message){
     console.log(data);
 }
 
+//ensures syntax for date parsing is correct
 function addZero(num){
     let str = num.toString();
     if ( (num < 10) && (num > -10) ){
