@@ -2,7 +2,34 @@ let config = require('../../config.json');
 const data = require('../../data.js');
 const disbut = require('discord-buttons');
 
-//creates menu and sends it
+let timeZoneDescriptions = [
+    'Baker and Howland Islands', //UTC-12
+    'American Samoa, Swains Island', //UTC-11
+    'Honolulu', //UTC-10
+    'Alaska Time Zone', //UTC-9
+    'Los Angeles (non-daylight savings) , Vancouver', //UTC-8
+    'Denver, Edmonton, Los Angeles (daylight savings)', //UTC-7
+    'Mexico City, Chicago, Guatemala City', //UTC-6
+    'New York, Toronto, Havana, Kingstom', //UTC-5
+    'Santiago, Santo Domingo, Manaus', //UTC-4
+    'São Paulo, Buenos Aires, Montevideo', //UTC-3
+    'Fernando de Noronha', //UTC-2
+    'Cape Verde', //UTC-1
+    'London, Dublin, Lisbon, Abidjan, Accra', //UTC-0
+    'Berlin, Rome, Paris, Madrid, Warsaw, Lagos', //UTC+1
+    'Cairo, Johannesburg, Khartoum, Kyiv, Bucharest', //UTC+2
+    'Moscow, Istanbul, Riyadh, Baghdad, Addis Ababa', //UTC+3
+    'Dubai, Baku, Tbilisi, Yerevan, Samara', //UTC+4
+    'Karachi, Tashkent, Yekaterinburg', //UTC+5
+    'Dhaka, Almaty, Omsk', //UTC+6
+    'Jakarta, Ho Chi Minh City, Bangkok, Krasnoyarsk', //UTC+7
+    'Shanghai, Taipei, Kuala Lumpur, Singapore, Perth', //UTC+8
+    'Tokyo, Seoul, Pyongyang, Ambon, Chita', //UTC+9
+    'Sydney, Port Moresby, Vladivostok', //UTC+10
+    'Nouméa', //UTC+11
+    'Auckland, Suva, Petropavlovsk-Kamchatsky', //UTC+12
+];
+
 function createMenu(message, client){
     
     let options = [];
@@ -17,6 +44,7 @@ function createMenu(message, client){
         options[index].setLabel(UTCnum)
             .setValue(`UTC${i}`)
             .setEmoji('🌎')
+            .setDescription(timeZoneDescriptions[index])
             .setDefault()
         index++;
     }

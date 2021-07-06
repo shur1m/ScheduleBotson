@@ -103,12 +103,12 @@ function scheduleInput(message, sendChannel){
         return;
     }
 
-    let delay = scheduledTime.getTime() - now;
-
-    if (delay < 500){
+    if (scheduledTime.getTime() - now < 500){
         message.reply("Invalid time: You cannot schedule a message in the past");
         return;
     }
+
+    let delay = scheduledTime.getTime() - now;
 
     message.reply(`Your message, *${joinText}*, has been scheduled for ${month}-${day}-${year} at ${hour}:${minute} UTC${timeZoneStr}:00`);
 
