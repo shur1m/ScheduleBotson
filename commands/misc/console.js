@@ -10,9 +10,9 @@ module.exports = {
     callback: (message, arguments, text, client) => {
         message.channel.send(`${text}`);
 
-        clearTimeout(data.scheduledMessages[0].schedId);
-        data.scheduledMessages.splice(0, 1);
-        console.log(data.scheduledMessages);
+        //clearTimeout(data.scheduledMessages[0].schedId);
+        //data.scheduledMessages.splice(0, 1);
+        //console.log(data.scheduledMessages);
 
     },
     permissions: [],

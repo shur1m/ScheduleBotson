@@ -24,7 +24,6 @@ module.exports = {
         }
         
         message.channel.send(embed);
-        console.log(embed);
     },
     permissions: [],
     requiredRoles: [],
