@@ -1,5 +1,4 @@
 const collectSchedule = require('./internal/collectSchedule.js');
-//test push
 
 module.exports = (client) => {
     const data = require('./data.js');
@@ -16,7 +15,7 @@ module.exports = (client) => {
     });
 
     //button setting for schedule
-    client.on('clickButton', async (button) => {
+    /*client.on('clickButton', async (button) => {
         switch (button.id) {
             case 'confirmTimeZone':
                 collectSchedule(button, client);
@@ -27,5 +26,5 @@ module.exports = (client) => {
             default:
                 break;
         }
-    });
+    });*/
 };
