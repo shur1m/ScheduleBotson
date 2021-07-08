@@ -7,7 +7,6 @@ disbut(client);
 
 const data = require('./data.js');
 const { token } = require('./config.json');
-const menuSettings = require('./menuSettings.js');
 
 console.log(data);
 
@@ -37,7 +36,6 @@ client.on('ready', async () => {
 
     readCommands('commands', commandBase, baseFile);
     readCommands('buttons', buttonBase, basefile1);
-    menuSettings(client);
 });
 
 client.login(token);

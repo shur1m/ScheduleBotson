@@ -46,10 +46,11 @@ module.exports = (client, buttonOptions) => {
         permissionError = 'You do not have permission to use this button.',
         permissions = [],
         requiredRoles = [],
+        type,
         callback,
     } = buttonOptions
 
-    console.log(`Registering button "${buttonID}"`)
+    console.log(`Registering button/menu "${buttonID}"`)
 
     if (permissions.length) {
         if (typeof permissions === 'string') {
@@ -59,40 +60,67 @@ module.exports = (client, buttonOptions) => {
         validatePermissions(permissions)
     }
 
-    client.on('clickButton', async (button)=> {
-        const member = button.clicker.member;
-        const guild = button.guild;
+    //check if type is button
+    if (type === 'button'){
+
+        client.on('clickButton', async (button)=> {
+            const member = button.clicker.member;
+            const guild = button.guild;
+            
+    
+            //check button id
+            if (button.id === buttonID){
+                //button has been run
+                
+                if (checkPermissions(permissions, member, button, permissionError)) {
+                    await button.reply.defer();
+                    return
+                }
         
-
-        //check button id
-        if (button.id === buttonID){
-            //button has been run
-
-            //check user permissions
-            for (const permission of permissions) {
-                if (!member.hasPermission(permission)) {
-                  button.channel.send(`<@${member.id}>, ${permissionError}`)
-                  await button.reply.defer()
-                  return
+                //check user roles
+                for (const requiredRole of requiredRoles) {
+                    const role = guild.roles.cache.find(
+                      (role) => role.name === requiredRole
+                    )
+          
+                    if (!role || !member.roles.cache.has(role.id)) {
+                      button.channel.send(`<@${member.id}>, You must have the "${requiredRole}" role to use this button.`)
+                      await button.reply.defer()
+                      return
+                    }
                 }
+    
+                callback(button, client)
+                await button.reply.defer();
+            }
+            
+        })
+    }
+
+    if (type == 'menu'){
+        
+        client.on('clickMenu', async (menu) => {
+            const member = menu.clicker.member;
+            const guild = menu.guild;
+
+            if (checkPermissions(permissions, member, menu, permissionError)) {
+                await menu.reply.defer();
+                return;
             }
 
-            //check user roles
-            for (const requiredRole of requiredRoles) {
-                const role = guild.roles.cache.find(
-                  (role) => role.name === requiredRole
-                )
-      
-                if (!role || !member.roles.cache.has(role.id)) {
-                  button.channel.send(`<@${member.id}>, You must have the "${requiredRole}" role to use this button.`)
-                  await button.reply.defer()
-                  return
-                }
+            if (menu.values[0].startsWith(buttonID)) {
+                callback(menu, client);
+                await menu.reply.defer();
             }
+        });
+    }
+}
 
-            callback(button, client)
-            await button.reply.defer();
+function checkPermissions(permissions, member, attachment, permissionError){
+    for (const permission of permissions) {
+        if (!member.hasPermission(permission)) {
+          attachment.channel.send(`<@${member.id}>, ${permissionError}`)
+          return true;
         }
-        
-    })
+    }
 }
