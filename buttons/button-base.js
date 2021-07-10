@@ -73,23 +73,17 @@ module.exports = (client, buttonOptions) => {
                 //button has been run
                 
                 if (checkPermissions(permissions, member, button, permissionError)) {
-                    await button.reply.defer();
+                    await button.reply.defer()
                     return
                 }
         
                 //check user roles
-                for (const requiredRole of requiredRoles) {
-                    const role = guild.roles.cache.find(
-                      (role) => role.name === requiredRole
-                    )
-          
-                    if (!role || !member.roles.cache.has(role.id)) {
-                      button.channel.send(`<@${member.id}>, You must have the "${requiredRole}" role to use this button.`)
-                      await button.reply.defer()
-                      return
-                    }
+                if (checkRoles(requiredRoles, guild, member, button)){
+                    await button.reply.defer()
+                    return
                 }
-    
+                
+                //call function
                 callback(button, client)
                 await button.reply.defer();
             }
@@ -108,6 +102,11 @@ module.exports = (client, buttonOptions) => {
                 return;
             }
 
+            if (checkRoles(requiredRoles, guild, member, menu)){
+                await menu.reply.defer();
+                return;
+            }
+
             if (menu.values[0].startsWith(buttonID)) {
                 callback(menu, client);
                 await menu.reply.defer();
@@ -121,6 +120,19 @@ function checkPermissions(permissions, member, attachment, permissionError){
         if (!member.hasPermission(permission)) {
           attachment.channel.send(`<@${member.id}>, ${permissionError}`)
           return true;
+        }
+    }
+}
+
+function checkRoles(requiredRoles, guild, member, attachment){
+    for (const requiredRole of requiredRoles) {
+        const role = guild.roles.cache.find(
+          (role) => role.name === requiredRole
+        )
+
+        if (!role || !member.roles.cache.has(role.id)) {
+          attachment.channel.send(`<@${member.id}>, You must have the "${requiredRole}" role to use this button.`)
+          return true
         }
     }
 }
