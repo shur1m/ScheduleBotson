@@ -1,7 +1,10 @@
 //awaiting messages: https://replit.com/talk/learn/Wait-for-messages-NodeJS-Discord-Bot-Development/23812
 //this file uses button.clicker.id instead to await user who clicks button
+//uuid https://github.com/uuidjs/uuid
 
-const data = require('../data');
+const { v4: uuidv4 } = require('uuid');
+const data = require('../data.js');
+const sendAtDate = require('./sendAtDate.js');
 
 module.exports = (button, client) => {
     let filter = m => m.author.id ===  button.clicker.id;
@@ -112,21 +115,28 @@ function scheduleInput(message, sendChannel){
 
     message.reply(`Your message, *${joinText}*, has been scheduled for ${month}-${day}-${year} at ${hour}:${minute} UTC${timeZoneStr}:00`);
 
-    //scheduling message
-    let timerId = setTimeout(() => {
+    //creating unique id
+    uniqueId = uuidv4();
 
+    //scheduling message
+
+    let dateArray = [month, day, year, hour, minute, timeZoneStr];
+    sendAtDate(scheduledTime, joinText, sendChannel, uniqueId, dateArray);
+
+    /*let timerId = setTimeout(() => {
         sendChannel.send(`${joinText}`);
         data.scheduledCounter -= 1;
         data.scheduledMessages.splice(0, 1);
         console.log(data);
-    }, delay);
+    }, delay);*/
 
     //saving timerid +other info in data file
-    data.scheduledMessages[data.scheduledCounter] = {
+    /*data.scheduledMessages.push({
+        uuid: uniqueId,
         schedId: timerId,
         content: joinText,
         dateAndTime: `${month}-${day}-${year}, ${hour}:${minute} UTC${timeZoneStr}:00`,
-    };
+    });*/
     data.scheduledCounter += 1;
     console.log(data);
 }
