@@ -6,4 +6,8 @@ module.exports = {
     scheduledMessages : [
 
     ],
+
+    channels: {
+        
+    }
 }
