@@ -27,7 +27,7 @@ function deleteMessage(message, arguments){
     for (let i = 0; i < data.scheduledMessages.length; i++){
         item = data.scheduledMessages[i];
 
-        if (item.content.startsWith(arguments[0])){
+        if ( (item.content.startsWith(arguments[0])) && (message.guild.id == item.guild) ){
             clearTimeout(item.schedId);
             messageFound = true;
             schedContent = data.scheduledMessages[i].content

@@ -13,23 +13,22 @@ module.exports = {
 
         let index = 0;
         for (element of data.scheduledMessages){
-            
-            let messageText = element.content;
-            let messageId = element.uuid;
+            if (element.guild == message.guild.id){
+                let messageText = element.content;
+                let messageId = element.uuid;
 
-            if (messageText.length > 170) {
-                messageText = element.content.substring(0, 170) + '...';
-            }
+                if (messageText.length > 170) {
+                    messageText = element.content.substring(0, 170) + '...';
+                }
 
-            embed.addFields(
-                {
+                embed.addFields({
                     name: messageText,
                     value: `Message ID: ${messageId} \nScheduled Time: ${element.dateAndTime}`,
                     inline: false
-                }
-            )
+                })
 
-            index++;
+                index++;
+            }
         }
         
         message.channel.send(embed);

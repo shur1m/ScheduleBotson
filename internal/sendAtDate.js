@@ -7,6 +7,7 @@ module.exports = function sendAtDate(date, text, sendChannel, uniqueID, dateArra
     //add scheduled message to data
     data.scheduledMessages.push({
         uuid: uniqueID,
+        guild: sendChannel.guild.id,
         content: text,
         dateAndTime: `${month}-${day}-${year}, ${hour}:${minute} UTC${timeZoneStr}:00`,
     });
