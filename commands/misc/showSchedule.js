@@ -1,7 +1,7 @@
 const data = require('../../data');
 
 module.exports = {
-    commands: ['showSchedule', 'showsched'],
+    commands: ['showSchedule', 'showsched', 'show'],
     minArgs: 0,
     maxArgs: 0,
     callback: (message, arguments, text) => {
@@ -9,13 +9,22 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
             .setTitle("Scheduled Messages")
             .setColor('#F5C4FF')
+            .setFooter('Use \'!deleteschedule\' or \'!delete\' to remove scheduled messages');
 
         let index = 0;
         for (element of data.scheduledMessages){
+            
+            let messageText = element.content;
+            let messageId = element.uuid;
+
+            if (messageText.length > 170) {
+                messageText = element.content.substring(0, 170) + '...';
+            }
+
             embed.addFields(
                 {
-                    name: element.content,
-                    value: `Message ID: ${index} \nScheduled Time: ${element.dateAndTime}`,
+                    name: messageText,
+                    value: `Message ID: ${messageId} \nScheduled Time: ${element.dateAndTime}`,
                     inline: false
                 }
             )

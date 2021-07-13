@@ -1,56 +1,48 @@
 //creates menu that allows deleting scheduled messages
-
 const data = require('../../data');
-const disbut = require('discord-buttons');
-const Discord = require('discord.js');
 
 module.exports = {
-    commands: ['deleteSchedule', 'delsched'],
-    minArgs: 0,
-    maxArgs: 0,
+    commands: ['deleteSchedule', 'delsched', 'delete'],
+    expectedArgs: '<message content>',
+    minArgs: 1,
+    maxArgs: 1,
     callback: (message, arguments, text) => {
         if (data.scheduledMessages.length === 0){
             message.reply("There are no scheduled messages to delete.");
             return;
         }
 
-        createMenu(message);
+        deleteMessage(message, arguments);
     },
     permissions: [],
     requiredRoles: [],
 }
 
 //creates menu
-function createMenu(message){
-    let options = [];
+function deleteMessage(message, arguments){
+    let messageFound = false;
+    let schedContent;
 
-    //adding options
+    //deleting scheduled message
     for (let i = 0; i < data.scheduledMessages.length; i++){
-        let optionValue = `sched${i}`;
-        let optionLabel = data.scheduledMessages[i].content
-        optionLabel = (optionLabel.length > 25) ? optionLabel.substring(0, 22) + '...' : optionLabel
+        item = data.scheduledMessages[i];
 
-        options[i] = new disbut.MessageMenuOption()
-        options[i]
-            .setLabel(optionLabel)
-            .setValue(optionValue)
-            .setDescription(data.scheduledMessages[i].dateAndTime)
-            .setDefault()
+        if (item.content.startsWith(arguments[0])){
+            clearTimeout(item.schedId);
+            messageFound = true;
+            schedContent = data.scheduledMessages[i].content
+            data.scheduledMessages.splice(i, 1);
+            data.scheduledCounter -= 1;
+            console.log('scheduled message deleted');
+        } 
     }
 
-    let select = new disbut.MessageMenu()
-        .setID('deleteMenu')
-        .setPlaceholder('Select Message'); //optional
-    
-    for (element of options){
-        select.addOption(element);
+    //responding depending on whether message was deleted
+    if (messageFound !== true) {
+        message.reply(`That message either does not exist, or has already been deleted.`)
+            .then(message => message.delete({ timeout: 2000 }))
+    } else {
+        message.reply(`The message: \n\n> ${schedContent} \n\n has been deleted.`)
+            .then(message => message.delete({ timeout: 2000 }))
     }
-
-    let delButton = new disbut.MessageButton()
-        .setStyle('red')
-        .setLabel('Delete') //default: NO_LABEL_PROVIDED
-        .setID('deleteSchedule')
-
-    message.channel.send('✤', select);
-    message.channel.send('Select the message you wish to delete, then press "Delete"', delButton);
 }

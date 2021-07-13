@@ -122,21 +122,7 @@ function scheduleInput(message, sendChannel){
 
     let dateArray = [month, day, year, hour, minute, timeZoneStr];
     sendAtDate(scheduledTime, joinText, sendChannel, uniqueId, dateArray);
-
-    /*let timerId = setTimeout(() => {
-        sendChannel.send(`${joinText}`);
-        data.scheduledCounter -= 1;
-        data.scheduledMessages.splice(0, 1);
-        console.log(data);
-    }, delay);*/
-
-    //saving timerid +other info in data file
-    /*data.scheduledMessages.push({
-        uuid: uniqueId,
-        schedId: timerId,
-        content: joinText,
-        dateAndTime: `${month}-${day}-${year}, ${hour}:${minute} UTC${timeZoneStr}:00`,
-    });*/
+    
     data.scheduledCounter += 1;
     console.log(data);
 }
