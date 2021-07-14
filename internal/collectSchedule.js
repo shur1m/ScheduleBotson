@@ -113,7 +113,7 @@ function scheduleInput(message, sendChannel){
 
     let delay = scheduledTime.getTime() - now;
 
-    message.reply(`Your message, *${joinText}*, has been scheduled for ${month}-${day}-${year} at ${hour}:${minute} UTC${timeZoneStr}:00`);
+    message.reply(`Your message: \n\n> ${joinText} \n\n has been scheduled for ${month}-${day}-${year} at ${hour}:${minute} UTC${timeZoneStr}:00`);
 
     //creating unique id
     uniqueId = uuidv4();
