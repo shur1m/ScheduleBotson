@@ -34,5 +34,5 @@ module.exports = {
         message.channel.send(embed);
     },
     permissions: [],
-    requiredRoles: [],
+    requiredRoles: ['scheduler'],
 }

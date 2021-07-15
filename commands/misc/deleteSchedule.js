@@ -15,7 +15,7 @@ module.exports = {
         deleteMessage(message, arguments);
     },
     permissions: [],
-    requiredRoles: [],
+    requiredRoles: ['scheduler'],
 }
 
 //creates menu

@@ -5,7 +5,7 @@ module.exports = {
     type: 'button',
     permissionError: 'You do not have permission to run this command.',
     permissions: [],
-    requiredRoles: [],
+    requiredRoles: ['scheduler'],
     callback: (button, client) => {
         collectSchedule(button, client);
     },

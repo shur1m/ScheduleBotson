@@ -84,5 +84,5 @@ module.exports = {
     maxArgs: 0,
     callback: myCallback,
     permissions: [],
-    requiredRoles: [],
+    requiredRoles: ['scheduler'],
 }
