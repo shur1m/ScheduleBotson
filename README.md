@@ -4,7 +4,7 @@
 
 Botson is the best secretary (discord bot) you've never had! It schedules messages/ announcements for you, and has memorized 7 different Japanese dictionaries!
 
-## Roadmap
+## Features 
 
 ### Implemented:
 * Scheduling messages via Menu
