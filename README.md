@@ -18,4 +18,5 @@ Botson remembers to send messages so you don't have to :).
 ## Inviting the bot: 
 
 [Top.gg Link](https://top.gg/bot/855579469799358475)
+
 You can also host the bot yourself using NodeJS and running index.js. You must make a config.json file with a "token" (bot token) and "prefix" (~) property.
