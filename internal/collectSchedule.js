@@ -94,7 +94,9 @@ function scheduleInput(message, sendChannel){
     minute = addZero(minute);
     
     //converting to actual dates
-    let timeZoneStr = addZero( +data.scheduledTimeZone.slice(3) );
+    let dataTimeZone = data.channels[message.channel.id]?.timeZone ?? 'UTC0';
+    console.log(dataTimeZone);
+    let timeZoneStr = addZero( +dataTimeZone.slice(3) );
     timeZoneStr = (+timeZoneStr >= 0) ? '+' + timeZoneStr : timeZoneStr;
 
     let now = Date.now();

@@ -1,4 +1,5 @@
 const { prefix } = require('../config.json')
+const ensureBotPermissions = require('../internal/ensureBotPermissions')
 
 const validatePermissions = (permissions) => {
   const validPermissions = [
@@ -50,6 +51,7 @@ module.exports = (client, commandOptions) => {
     minArgs = 0,
     maxArgs = null,
     permissions = [],
+    botPermissions = ['SEND_MESSAGES'],
     requiredRoles = [],
     callback,
     internal = false,
@@ -73,6 +75,7 @@ module.exports = (client, commandOptions) => {
 
   // Listen for messages
   client.on('message', (message) => {
+
     const { member, content, guild } = message
 
     for (const alias of commands) {
@@ -83,6 +86,11 @@ module.exports = (client, commandOptions) => {
         content.toLowerCase() === command
       ) {
         // A command has been ran
+
+        //ensure bot can send messages in channel
+        if (ensureBotPermissions(client, member, message, botPermissions)){
+          return;
+        }
 
         // Ensure the user has the required permissions
         for (const permission of permissions) {
@@ -127,7 +135,12 @@ module.exports = (client, commandOptions) => {
         }
 
         // Handle the custom command code
-        callback(message, arguments, arguments.join(' '), client)
+        try {
+          callback(message, arguments, arguments.join(' '), client)
+        }
+        catch(error){
+          console.error(error);
+        }
 
         return
       }

@@ -1,4 +1,4 @@
-data = require('../../data.js');
+const data = require('../../data.js');
 
 module.exports = {
     buttonID: 'UTC',
@@ -7,7 +7,11 @@ module.exports = {
     permissions: [],
     requiredRoles: ['scheduler'],
     callback: (menu, client) => {
-        data.scheduledTimeZone = menu.values[0];
+        
+        if (data.channels[menu.channel.id] === undefined)
+            data.channels[menu.channel.id] = {};
+
+        data.channels[menu.channel.id].timeZone = menu.values[0];
         console.log(data);
     },
 }

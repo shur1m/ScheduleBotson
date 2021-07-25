@@ -1,3 +1,5 @@
+const ensureBotPermissions = require("../internal/ensureBotPermissions");
+
 const validatePermissions = (permissions) => {
     const validPermissions = [
         'CREATE_INSTANT_INVITE',
@@ -45,6 +47,7 @@ module.exports = (client, buttonOptions) => {
         buttonID,
         permissionError = 'You do not have permission to use this button.',
         permissions = [],
+        botPermissions = ['SEND_MESSAGES'],
         requiredRoles = [],
         type,
         callback,
@@ -66,11 +69,16 @@ module.exports = (client, buttonOptions) => {
         client.on('clickButton', async (button)=> {
             const member = button.clicker.member;
             const guild = button.guild;
-            
-    
+
             //check button id
             if (button.id === buttonID){
                 //button has been run
+
+                //ensure bot can send messages in channel
+                if (ensureBotPermissions(client, member, button, botPermissions)){
+                    await button.reply.defer()
+                    return;
+                }
                 
                 if (checkPermissions(permissions, member, button, permissionError)) {
                     await button.reply.defer()
@@ -84,7 +92,12 @@ module.exports = (client, buttonOptions) => {
                 }
                 
                 //call function
-                callback(button, client)
+                try {
+                    callback(button, client)
+                } catch(error) {
+                    console.error(error)
+                }
+                
                 await button.reply.defer();
             }
             
@@ -108,6 +121,13 @@ module.exports = (client, buttonOptions) => {
             }
 
             if (menu.values[0].startsWith(buttonID)) {
+
+                //ensure bot has permission to send messages
+                if (ensureBotPermissions(client, member, menu, botPermissions)){
+                    await menu.reply.defer()
+                    return;
+                }
+
                 callback(menu, client);
                 await menu.reply.defer();
             }

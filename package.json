@@ -4,5 +4,8 @@
     "discord.js": "^12.5.3",
     "nodemon": "^2.0.9",
     "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
