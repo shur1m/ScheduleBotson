@@ -13,6 +13,11 @@ console.log(data);
 //initializing bot
 client.on('ready', async () => {
     console.log('the client is ready');
+
+    client.user.setActivity('Invite me on top.gg', {
+        type: 'PLAYING',
+        url: ""
+    });
     
     const baseFile = 'command-base.js';
     const commandBase = require(`./commands/${baseFile}`);
