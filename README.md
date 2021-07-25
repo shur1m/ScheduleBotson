@@ -15,8 +15,6 @@ Botson remembers to send messages so you don't have to :).
 
 ![Uzoma Medium Gif](https://i.imgur.com/hhPeiX5.gif)
 
-## Hosting the bot
+## Inviting the bot: 
 
-Requires NodeJS v12 or after <br>
-Using the terminal, navigate to bot folder and run `node index.js`
-You must also create `config.json` with a token and prefix property.
+[Top.gg Link](https://top.gg/bot/855579469799358475)
