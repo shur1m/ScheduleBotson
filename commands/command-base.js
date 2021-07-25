@@ -87,6 +87,12 @@ module.exports = (client, commandOptions) => {
       ) {
         // A command has been ran
 
+        //ensure textchannel is not a dm
+        if (message.channel.type === 'dm'){
+          message.channel.send('Unfortunately, this bot does not work within Direct Messages. Please use commands in a guild channel.');
+          return;
+        }
+
         //ensure bot can send messages in channel
         if (ensureBotPermissions(client, member, message, botPermissions)){
           return;
