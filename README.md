@@ -17,4 +17,11 @@ Botson remembers to send messages so you don't have to :).
 
 ## Inviting the bot: 
 
-Unfortunately I am no longer hosting this bot on a server. You can, however, host the bot yourself by running index.js and filling out the config file.
+Unfortunately I am no longer hosting this bot on a server. Feel free to host the bot on your own computer. I order to do this, you will need to create a file named `config.json` under the main directory ScheduleBotson. The following text should be placed in `config.json`.
+```json
+{
+    "token": "your token",
+    "prefix": "!"
+}
+```
+Replace `"your token"` with your own bot token in quotes and change the prefix to whatever you would like the bot to respond to.
